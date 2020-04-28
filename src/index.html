@@ -2,18 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+   rel="stylesheet" 
+   href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+   />
+
+   <link
+   rel="stylesheet" 
+   href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css"
+   />
+
+
+
+   <link rel="stylesheet" href="E:\news-aggregator-app\src\styles\css\style.css"> 
   <title>News Aggregator</title>
 </head>
 <body>
-  <h1 class="site-title">News Aggregator</h1>
+  <header>
+    <div class="language-switcher">
+      <label class="label">
+        <div class="toggle">
+          <input
+           type="CheckBox" 
+           class="toggle-state"
+           name="check"
+           value="check"
+           id="mode-switch"
+           />
+
+          <div class="toggle-inner">
+            <div class="indicator"></div>
+          </div>
+
+          <div class="active-bg"></div>
+
+        </div>
+        <div class="label-text">enable Dark Mode</div>
+      </label>
+    </div>
+
+    <div class="container">
+      <div class="navbar-brand brand-logo">
+        <div class="navbar-item">
+          News Aggregator
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <main class="container">
+    <section class="section search">
+      <input
+       type="text" 
+       id="search"
+       placeholder="Type and press enter to search..."
+       />
+
+       <button
+        class="clear"
+         id="clear-search"
+         > &times;
+         </button>
+    </section>
+
+    <section class="section news">
+      <ul class="articles" id="news-articles"></ul>
+      <div class="not-found notification is-info" style="display: none;">
+        No article was found based on the search.
+      </div>
+
+      <div class="error" style="display: none;">
+        <div class="notification is-danger">
+          could not fetch Articles. Try Again.
+        </div>
+      </div>
+
+      <div class="loading" id="loading">
+        <div class="lds-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+      <button class="button" id="show-more">Show More</button>
+    </section>
+</main>
+
+    <footer class="footer">
+      <div class="container has-text-centered">
+        <p>
+          <strong>News Aggregator</strong> developed by
+          <a href="https://github.com/londhemayuri/news-aggregator-app">Mayuri Londhe</a>. &copy;
+          2020.
+        </p>
+      </div>
+    </footer>
+
   
-  <div class="search-container">
-    <input type="text" name="search" id="search" placeholder="Type and press enter to search..." />
-  </div>
 
-  <ul id="news-articles">
-
-  </ul>
+  <script src="E:\news-aggregator-app\src\scripts\index.js" type="text/js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
+© 2020 GitHub, Inc.
