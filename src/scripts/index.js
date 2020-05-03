@@ -1,67 +1,76 @@
-//for headlines
-var url = 'https://newsapi.org/v2/top-headlines?'+
-'country=in&'+
-'apiKey=8857ddfa72ae47238500738f55cc70f1'; 
-let httpGetAsync = (theUrl, callback) => {
-// AJAX
-var xmlHttp = new XMLHttpRequest();
+//  Toggle Function//
+document.querySelector("#toggle_action").addEventListener('change',toggle_func)
 
-// function which executes when state of your request changes
-xmlHttp.onreadystatechange = () => {
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        // this is the important line
-        callback(xmlHttp.responseText);
+function toggle_func(e){                        //added extra toggle function//
+  if (e.target.checked)
+   {
+    document.documentElement.setAttribute('data-theme', 'lite');
+    document.querySelector(".toggletxt").innerHTML="Toggle to Dark Mode";
     }
+else
+   {
+    document.documentElement.setAttribute('data-theme', 'dark');                
+    document.querySelector(".toggletxt").innerHTML="Toggle to Lite Mode";
+   }   
 }
 
-xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-xmlHttp.send(null);
-}
 
-let nodeCreated = `
-<li class="article">
-  <img class="article-img" src="IMG-20180709-WA0015.jpg" alt="image" style="width:100%">
-  <h2 class="article-title"> hello hii</h2>
-  <p class="article-description">hxjhsgyghwyugyuvyux6fwxgfw</p>
-  <span class="article-author" style="display: block;"> shaikh.a.a</span>
-  <a class="article-link" href="google.com"> hhjh</a>
-</li>
-
-`;
-
-let output = "";
-
-
-
-let makeSomeHTML = (response) => {
-let obj = JSON.parse(response);
-let dataArr = obj["articles"];
-  for (let i = 0; i < dataArr.length; i++) {
-      let currObj = dataArr[i];
-      let atitle = currObj["title"];
-      let aauthor = currObj["author"];
-      let adescription = currObj["description"];
-      let aimage = currObj["urlToImage"];
-      let alink = currObj["url"];
-      let outTemplate = `
-             <li class="article">
-                  <img  class="article-img" src="${aimage}" alt="image" style="width:100%" ><br><br>
-                  <h2 class="article-title"> ${atitle}</h2><br>
-                  <p class="article-description">${adescription}</p><br>
-                  <span class="article-author" style="display: block;"> ${aauthor}</span><br>
-                  <a class="article-link" href="${alink}">link to page </a>
-            </li>    
+const apikey="d11a43d85241423d80a4a8afed8021c7";
+var article_area=document.getElementById("news-articles");
+function getNews(news){
+  let output="";
+  if(news.totalResults>0){
+    news.articles.forEach(ind=>{
+      output+= 
+        ` <section class="container">
+          <li class="article"><a class="article-link" href="${ind.url}" target="_blank">
+          <div class="img_area">
+          <img src="${ind.urlToImage}" class="article-img" alt="${ind.title}"></img>
+          </div>
+          <h2 class="article-title">${ind.title}</h2>
+          <p class="article-description">${ind.description || "Description not available"}</p> <br>
+          <span class="article-author">-${ind.author? ind.author: "Anon"}</span><br>
+          </a>
+          </li>
+          </section>
         `;
-    output = output+ outTemplate;
+    });
+    article_area.innerHTML=output;
+  }
+  else
+  { 
+    article_area.innerHTML='<li class="not-found">No article was found based on the search.</li>';  //for invalid search//
+  }
+};
+
+async function retreive(searchValueText=""){
+
+    article_area.innerHTML='<p class="load">News are Loading...</p>';
     
-  
+    if(searchValueText!=""){
+      url=`https://newsapi.org/v2/everything?q=${searchValueText}&apiKey=${apikey}`;
+    }
+    else
+    {
+      url=`https://newsapi.org/v2/top-headlines?country=in&apiKey=${apikey}`;
+    }
+    const response=await fetch(url);
+    const result=await response.json();
+    getNews(result);
 }
 
+async function searchvalue(e){  
+    if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") //because 13 is ascii value of enter button//
+     {
+      retreive(e.target.value);
+     }
+};
 
-
-document.querySelector('#news-articles').innerHTML = output;
+function start(){                                                                //from function code start//
+  document.getElementById("search").addEventListener('keypress',searchvalue);
+  retreive();
 }
-httpGetAsync(url, makeSomeHTML);
 
-
+(function(){
+  start();}
+)();
