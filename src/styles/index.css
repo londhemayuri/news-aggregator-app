@@ -4,9 +4,9 @@
   --border-color:white;
   --box-color:rgba(39, 35, 35, 0.986);
   --img-background:black;
-  --box-shadow:wheat;
+  --box-shadow:yellow;
   --author-color:rgb(43, 173, 216);
-  --border-line-color:white;
+  --border-line-color:rgb(177, 224, 122);
 }
 
 [data-theme="lite"] {
@@ -312,5 +312,9 @@ input:checked + .slider:before {
     width: 265px;
     height: 205px;
   }
+}
+
+.not-found {
+  font-size: xx-large;
 }
 /*# sourceMappingURL=index.css.map */
