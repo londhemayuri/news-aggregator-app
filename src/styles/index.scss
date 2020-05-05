@@ -10,11 +10,11 @@
 }
 
 [data-theme="lite"] {
-    --background-body-color: wheat;
+    --background-body-color: rgb(82, 219, 190);
     --font-color:black;
     --border-color:black;
-    --box-color:rgb(31, 247, 157);
-    --img-background:wheat;
+    --box-color:rgb(128, 134, 190);
+    --img-background:rgb(100, 67, 4);
     --box-shadow:rgb(31, 247, 157);
     --author-color:black;
   }
@@ -257,13 +257,7 @@ body{
       display: flex;
       flex-wrap: wrap;  
     }
-    .not-found{
-      color:var(--font-color);
-      font-family: sans-serif;
-      font-size: 25px;
-      margin-left: -20px;
-      list-style-type: none;
-    }
+    
     .load{
      color:var(--font-color);
      font-family: sans-serif;
@@ -286,9 +280,14 @@ body{
     height:205px;
   }
   }
-   
   .not-found{
-    font-size: xx-large;
-    
+    color:var(--font-color);
+    font-family: sans-serif;
+    font-size: 25px;
+    margin-left: -20px;
+    list-style-type: none;
   }
+   
+  
+  
   

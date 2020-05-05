@@ -24,14 +24,15 @@ function getNews(news){
       output+= 
         ` <section class="container">
           <li class="article"><a class="article-link" href="${ind.url}" target="_blank">
+          
           <div class="img_area">
           <img src="${ind.urlToImage}" class="article-img" alt="${ind.title}"></img>
           </div>
           <h2 class="article-title">${ind.title}</h2>
           <p class="article-description">${ind.description || "Description not available"}</p> <br>
           <span class="article-author">-${ind.author? ind.author: "Anon"}</span><br>
-          </a>
-          </li>
+          
+          <a></li>
           </section>
         `;
     });
