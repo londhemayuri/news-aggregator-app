@@ -1,7 +1,7 @@
-//  Toggle Function//
+// Lite Mode/Dark Mode Toggle Function//
 document.querySelector("#toggle_action").addEventListener('change',toggle_func)
 
-function toggle_func(e){                        //added extra toggle function//
+function toggle_func(e){
   if (e.target.checked)
    {
     document.documentElement.setAttribute('data-theme', 'lite');
@@ -9,14 +9,15 @@ function toggle_func(e){                        //added extra toggle function//
     }
 else
    {
-    document.documentElement.setAttribute('data-theme', 'dark');                
+    document.documentElement.setAttribute('data-theme', 'dark');
     document.querySelector(".toggletxt").innerHTML="Toggle to Lite Mode";
    }   
 }
 
-
-const apikey="d11a43d85241423d80a4a8afed8021c7";
+//Api-Key//
+const apikey="339b58f0aa7c460fa259944a0681031f";
 var article_area=document.getElementById("news-articles");
+//Function to have formatted NEWS//
 function getNews(news){
   let output="";
   if(news.totalResults>0){
@@ -24,15 +25,14 @@ function getNews(news){
       output+= 
         ` <section class="container">
           <li class="article"><a class="article-link" href="${ind.url}" target="_blank">
-          
           <div class="img_area">
           <img src="${ind.urlToImage}" class="article-img" alt="${ind.title}"></img>
           </div>
           <h2 class="article-title">${ind.title}</h2>
           <p class="article-description">${ind.description || "Description not available"}</p> <br>
           <span class="article-author">-${ind.author? ind.author: "Anon"}</span><br>
-          
-          <a></li>
+          </a>
+          </li>
           </section>
         `;
     });
@@ -40,10 +40,10 @@ function getNews(news){
   }
   else
   { 
-    article_area.innerHTML='<div class="not-found">No article was found based on the search.</div>';  //for invalid search//
+    article_area.innerHTML='<li class="not-found">No article was found based on the search.</li>';
   }
 };
-
+// Function to retreive news using Fetch API with Await//
 async function retreive(searchValueText=""){
 
     article_area.innerHTML='<p class="load">News are Loading...</p>';
@@ -59,19 +59,19 @@ async function retreive(searchValueText=""){
     const result=await response.json();
     getNews(result);
 }
-
+//Get text value from Searchbar and pass to retreive function//
 async function searchvalue(e){  
-    if (event.which === 13 || event.keyCode === 13 || event.key === "Enter") //because 13 is ascii value of enter button//
+    if (event.which === 13 || event.keyCode === 13 || event.key === "Enter")
      {
       retreive(e.target.value);
      }
 };
-
-function start(){                                                                //from function code start//
+//Attached Event listener for Searchbar to retreive text from Searchbar//
+function start(){
   document.getElementById("search").addEventListener('keypress',searchvalue);
   retreive();
 }
-
+//Initializing Function//
 (function(){
   start();}
 )();
