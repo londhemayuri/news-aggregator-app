@@ -1,77 +1,132 @@
-// Lite Mode/Dark Mode Toggle Function//
-document.querySelector("#toggle_action").addEventListener('change',toggle_func)
+  
+//for headlines
+var url = 'https://newsapi.org/v2/top-headlines?'+
+'country=in&'+
+'apiKey=8857ddfa72ae47238500738f55cc70f1'; 
+let httpGetAsync = (theUrl, callback) => {
+// AJAX
+var xmlHttp = new XMLHttpRequest();
 
-function toggle_func(e){
-  if (e.target.checked)
-   {
-    document.documentElement.setAttribute('data-theme', 'lite');
-    document.querySelector(".toggletxt").innerHTML="Toggle to Dark Mode";
+// function which executes when state of your request changes
+xmlHttp.onreadystatechange = () => {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        // this is the important line
+        callback(xmlHttp.responseText);
     }
-else
-   {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    document.querySelector(".toggletxt").innerHTML="Toggle to Lite Mode";
-   }   
 }
 
-//Api-Key//
-const apikey="339b58f0aa7c460fa259944a0681031f";
-var article_area=document.getElementById("news-articles");
-//Function to have formatted NEWS//
-function getNews(news){
-  let output="";
-  if(news.totalResults>0){
-    news.articles.forEach(ind=>{
-      output+= 
-        ` <section class="container">
-          <li class="article"><a class="article-link" href="${ind.url}" target="_blank">
-          <div class="img_area">
-          <img src="${ind.urlToImage}" class="article-img" alt="${ind.title}"></img>
-          </div>
-          <h2 class="article-title">${ind.title}</h2>
-          <p class="article-description">${ind.description || "Description not available"}</p> <br>
-          <span class="article-author">-${ind.author? ind.author: "Anon"}</span><br>
-          </a>
-          </li>
-          </section>
+xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlHttp.send(null);
+}
+
+let nodeCreated = `
+<li class="article">
+  <img class="article-img" src="IMG-20180709-WA0015.jpg" alt="image" style="width:100%">
+  <h2 class="article-title"> hello hii</h2>
+  <p class="article-description">hxjhsgyghwyugyuvyux6fwxgfw</p>
+  <span class="article-author" style="display: block;"> londhe.m.b</span>
+  <a class="article-link" href="google.com"> hhjh</a>
+</li>
+
+`;
+
+let output = "";
+
+let makeSomeHTML = (response) => {
+let obj = JSON.parse(response);
+let dataArr = obj["articles"];
+  for (let i = 0; i < dataArr.length; i++) {
+      let currObj = dataArr[i];
+      let atitle = currObj["title"];
+      let aauthor = currObj["author"];
+      let adescription = currObj["description"];
+      let aimage = currObj["urlToImage"];
+      let alink = currObj["url"];
+      let outTemplate = `
+             <li class="article">
+                  <img  class="article-img" src="${aimage}" alt="image" style="width:100%" ><br><br>
+                  <h2 class="article-title"> ${atitle}</h2><br>
+                  <p class="article-description">${adescription || "DEscription not available"}</p><br>
+                  <span class="article-author" style="display: block;"> ${aauthor}</span><br>
+                  <a class="article-link" href="${alink}">link to page </a>
+            </li>    
         `;
-    });
-    article_area.innerHTML=output;
-  }
-  else
-  { 
-    article_area.innerHTML='<li class="not-found">No article was found based on the search.</li>';
-  }
-};
-// Function to retreive news using Fetch API with Await//
-async function retreive(searchValueText=""){
-
-    article_area.innerHTML='<p class="load">News are Loading...</p>';
+    output = output+ outTemplate;
     
-    if(searchValueText!=""){
-      url=`https://newsapi.org/v2/everything?q=${searchValueText}&apiKey=${apikey}`;
-    }
-    else
-    {
-      url=`https://newsapi.org/v2/top-headlines?country=in&apiKey=${apikey}`;
-    }
-    const response=await fetch(url);
-    const result=await response.json();
-    getNews(result);
+  
 }
-//Get text value from Searchbar and pass to retreive function//
-async function searchvalue(e){  
-    if (event.which === 13 || event.keyCode === 13 || event.key === "Enter")
-     {
-      retreive(e.target.value);
-     }
-};
-//Attached Event listener for Searchbar to retreive text from Searchbar//
-function start(){
-  document.getElementById("search").addEventListener('keypress',searchvalue);
-  retreive();
+document.querySelector('#news-articles').innerHTML = output;
 }
-//Initializing Function//
-(function(){
-  start();}
-)();
+httpGetAsync(url, makeSomeHTML);
+
+
+
+
+
+
+
+//serarch
+
+const searchFrom = document.querySelector(".form-search");
+const input = document.getElementById("search");
+
+searchFrom.addEventListener('submit',retrieve)
+
+
+function retrieve(e){
+e.preventDefault() 
+let topic=input.value;
+let url1 =   `https://newsapi.org/v2/everything?q=${topic}&apiKey=8857ddfa72ae47238500738f55cc70f1`
+
+let output = "";
+
+
+
+let makeSomeHTML1 = (response) => {
+let obj = JSON.parse(response);
+let dataArr = obj["articles"];   
+for (let i = 0; i < dataArr.length; i++) {
+let currObj = dataArr[i];
+let atitle = currObj["title"];
+let aauthor = currObj["author"];
+let adescription = currObj["description"];
+let aimage = currObj["urlToImage"];
+let alink = currObj["url"];
+let outTemplate = `
+  <li class="article">
+       <img  class="article-img" src="${aimage}" alt="${atitle}" style="width:100%" ><br><br>
+       <h2 class="article-title"> ${atitle}</h2><br>
+       <p class="article-description">${adescription || "DEscription not available"} </p><br>
+       <span class="article-author" style="display: block;"> ${aauthor}</span><br>
+       <a class="article-link" href="${alink}">link to page </a>
+ </li>    
+`;
+output = output+ outTemplate; 
+}
+
+let select = document.querySelector('.not-found');
+
+if (obj.totalResults == 0 ){   
+ select.innerHTML = "No article was found based on the search.";             
+}
+
+
+document.querySelector('#news-articles').innerHTML = output;
+}
+httpGetAsync(url1, makeSomeHTML1);
+}
+
+
+
+
+// reload
+var btn = document.querySelector("#clearbtn");
+
+btn.addEventListener("click", function(e){
+
+e.preventDefault();
+
+location.reload(true);
+
+});
